@@ -1,4 +1,4 @@
-name := """running-tracker"""
+name := """workout-tracker"""
 
 version := "1.0-SNAPSHOT"
 
@@ -12,3 +12,5 @@ libraryDependencies ++= Seq(
   cache,
   ws
 )
+
+libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "1.2.0"
