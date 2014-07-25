@@ -1,0 +1,55 @@
+
+
+    <div class="row" ng-controller="WorkoutCtrl as wc">
+        &NonBreakingSpace;
+        <div class="jumbotron">
+            <h2>Workout Tracker</h2>
+
+            <p class="pull-right">... a UI created using AngularJS and Bootstrap</p>
+        </div>
+
+
+        <div class="row">
+            <div class="form-group">
+                <h3>
+                    Workouts
+                    <a ng-href="/#/workout/add" class="btn btn-primary pull-right" id="btn_workout_add">Add Workout</a>
+                </h3>
+                <hr>
+            </div>
+            <table id="workout_list" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Distance</th>
+                    <th>Time</th>
+                    <th>Pace</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="workout in wc.workouts">
+                    <td>
+                        {{ workout.name }}
+                    </td>
+                    <td>
+                        {{ workout.distance }}
+                    </td>
+                    <td>
+                        {{ workout.duration }}
+                    </td>
+                </tr>
+                <tr ng-hide="wc.workouts.length">
+                    <td colspan="5">
+                        <p class="text-center">No Workouts found</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <hr>
+            <h4>Debug:</h4>
+            <pre>{{ wc.workouts | json }}</pre>
+        </div>
+
+    </div>

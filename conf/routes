@@ -1,20 +1,20 @@
 # Home page
 GET         /                          controllers.Application.index
-#default list showing current week
-GET         /workouts                  controllers.Workouts.index
+
+GET         /workouts                  controllers.Workouts.thisWeek
+
 #list showing workouts in given date range
 GET         /workouts/:from/:to        controllers.Workouts.list(from: String, to: String)
 #detailed view of specific workout
 GET         /workouts/:id              controllers.Workouts.show(id: Int)
+
 #create new workout
-POST        /workouts                  controllers.Workouts.add
+POST        /workout                   controllers.Workouts.add
 
 #display report for current week
 GET         /report                    controllers.Report.index
 #display report for each week in given range
 GET         /report/:from/:to          controllers.Report.list(from: String, to: String)
-
-
 
 
 

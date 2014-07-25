@@ -1,6 +1,7 @@
 package models
 
 import com.github.nscala_time.time.Imports._
+import play.api.libs.json.Json
 
 case class Workout(id: Long, userId: Int, name: String, date: DateTime, distanceMeters: Int, durationSeconds: Int)
 
@@ -13,24 +14,16 @@ object Workout {
     Workout(4L, 2, "run for different user", DateTime.now, 100, 9)
   )
 
-  /**
-   * Products sorted by EAN code.
-   */
   def findAll = this.workouts.toList.sortBy(_.id)
 
-  /**
-   * The product with the given EAN code.
-   */
   def findById(id: Long) = this.workouts.find(_.id == id)
 
-  /**
-   * Saves a product to the catalog.
-   */
-  def save(workout: Workout) = {
-    findById(workout.id).map( oldWorkout =>
-      this.workouts = this.workouts - oldWorkout + workout
-    ).getOrElse(
-        throw new IllegalArgumentException("Workout not found")
-      )
+  def add(workout: Workout) = {
+    this.workouts = this.workouts + workout
+    //findById(workout.id).map( oldWorkout =>
+    //  this.workouts = this.workouts - oldWorkout + workout
+    //).getOrElse(
+     //   throw new IllegalArgumentException("Workout not found")
+     // )
   }
 }
