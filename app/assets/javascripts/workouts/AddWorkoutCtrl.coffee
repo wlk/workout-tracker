@@ -1,4 +1,3 @@
-
 class AddWorkoutCtrl
 
     constructor: (@$log, @$location,  @WorkoutService) ->

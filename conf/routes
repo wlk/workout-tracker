@@ -1,22 +1,27 @@
 # Home page
-GET         /                          controllers.Application.index
+GET         /                           controllers.Application.index
 
-GET         /workouts                  controllers.Workouts.thisWeek
-
+#REST API
+#default workout list
+GET         /api/workouts                   controllers.Workouts.thisWeek
 #list showing workouts in given date range
-GET         /workouts/:from/:to        controllers.Workouts.list(from: String, to: String)
+GET         /api/workouts/:from/:to         controllers.Workouts.list(from: String, to: String)
 #detailed view of specific workout
-GET         /workouts/:id              controllers.Workouts.show(id: Int)
-
+GET         /api/workouts/:id               controllers.Workouts.show(id: Int)
+#edit given workout
+POST        /api/workouts/:id               controllers.Workouts.edit(id: Int)
+#delete given workout
+POST        /api/workouts/:id/delete        controllers.Workouts.delete(id: Int)
 #create new workout
-POST        /workout                   controllers.Workouts.add
+POST        /api/workout                    controllers.Workouts.add
 
-#display report for current week
-GET         /report                    controllers.Report.index
+
+#report for current week
+GET         /api/report                     controllers.Report.thisWeek
 #display report for each week in given range
-GET         /report/:from/:to          controllers.Report.list(from: String, to: String)
+GET         /api/report/:from/:to           controllers.Report.list(from: String, to: String)
 
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file              controllers.Assets.at(path="/public", file)
+GET         /assets/*file               controllers.Assets.at(path="/public", file)

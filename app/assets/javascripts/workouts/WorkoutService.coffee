@@ -1,40 +1,54 @@
-
 class WorkoutService
 
-    @headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-    @defaultConfig = { headers: @headers }
+  @headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+  @defaultConfig = { headers: @headers }
 
-    constructor: (@$log, @$http, @$q) ->
-        @$log.debug "constructing WorkoutService"
+  constructor: (@$log, @$http, @$q) ->
+    @$log.debug "constructing WorkoutService"
 
-    listWorkouts: () ->
-        @$log.debug "listWorkouts()"
-        deferred = @$q.defer()
+  listWorkouts: () ->
+    @$log.debug "listWorkouts()"
+    deferred = @$q.defer()
 
-        @$http.get("/workouts")
-        .success((data, status, headers) =>
-                @$log.info("Successfully listed workouts - status #{status}")
-                deferred.resolve(data)
-            )
-        .error((data, status, headers) =>
-                @$log.error("Failed to list workouts - status #{status}")
-                deferred.reject(data);
-            )
-        deferred.promise
+    @$http.get("/api/workouts")
+    .success((data, status, headers) =>
+      @$log.info("Successfully listed workouts - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to list workouts - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
 
-    addWorkout: (workout) ->
-        @$log.debug "addWorkout" #{angular.toJson(workout, true)}"
-        deferred = @$q.defer()
+  getReport: () ->
+    @$log.debug "getReport()"
+    deferred = @$q.defer()
 
-        @$http.post('/workout', workout)
-        .success((data, status, headers) =>
-                @$log.info("Successfully created workout - status #{status}")
-                deferred.resolve(data)
-            )
-        .error((data, status, headers) =>
-                @$log.error("Failed to create workout - status #{status}")
-                deferred.reject(data);
-            )
-        deferred.promise
+    @$http.get("/api/report")
+    .success((data, status, headers) =>
+      @$log.info("Successfully got report #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to get report status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
+
+  addWorkout: (workout) ->
+    @$log.debug "addWorkout"
+    deferred = @$q.defer()
+
+    @$http.post('/api/workout', workout)
+    .success((data, status, headers) =>
+      @$log.info("Successfully created workout - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to create workout - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
 
 servicesModule.service('WorkoutService', WorkoutService)

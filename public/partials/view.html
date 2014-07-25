@@ -1,5 +1,3 @@
-
-
     <div class="row" ng-controller="WorkoutCtrl as wc">
         &NonBreakingSpace;
         <div class="jumbotron">
@@ -24,7 +22,7 @@
                     <th>Date</th>
                     <th>Distance</th>
                     <th>Time</th>
-                    <th>Pace</th>
+                    <th>Speed</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,8 +40,14 @@
                         {{ workout.durationSeconds }}
                     </td>
                     <td>
-                        {{ workout.pace }}
+                        {{ workout.speed }}
                     </td>
+                </tr>
+                <tr>
+                    <td colspan="2">Summary</td>
+                    <td>{{wc.report.totalDistance}}</td>
+                    <td>{{wc.report.totalTime}}</td>
+                    <td>{{wc.report.avgSpeed}}</td>
                 </tr>
                 <tr ng-hide="wc.workouts.length">
                     <td colspan="5">

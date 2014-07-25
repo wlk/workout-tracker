@@ -1,5 +1,7 @@
 package controllers
 
+import java.text.DecimalFormat
+
 import org.joda.time.DateTime
 import play.api.mvc._
 import play.api.mvc.Controller
@@ -10,7 +12,7 @@ import play.api.Logger
 
 object Workouts extends Controller {
   val dateFormat = org.joda.time.format.ISODateTimeFormat.dateTime()
-
+  val formatter = new DecimalFormat("#.#")
 
   //Product to Json
   implicit object workoutWrites extends Writes[Workout] {
@@ -19,7 +21,7 @@ object Workouts extends Controller {
       "distanceMeters" -> Json.toJson(w.distanceMeters),
       "date" -> Json.toJson(w.date.toString()),
       "durationSeconds" -> Json.toJson(w.durationSeconds),
-      "pace" -> Json.toJson( w.distanceMeters / w.durationSeconds + "m/s" )
+      "speed" -> Json.toJson( formatter.format(1.0 * w.distanceMeters / w.durationSeconds) + " m/s" )
     )
   }
 
@@ -33,11 +35,6 @@ object Workouts extends Controller {
     (JsPath \ "durationSeconds").read[Int]
     )(Workout.apply _)
 
-  def index() = Action {
-    val workouts = Workout.findAll
-
-    Ok(Json.arr(workouts))
-  }
 
   def thisWeek() = Action {
     val workouts = Workout.findAll.map { workouts => workouts }
@@ -67,4 +64,7 @@ object Workouts extends Controller {
       }
   }
 
+  def edit(id: Int) = play.mvc.Results.TODO
+
+  def delete(id: Int) = play.mvc.Results.TODO
 }

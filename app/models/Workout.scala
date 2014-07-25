@@ -20,10 +20,22 @@ object Workout {
 
   def add(workout: Workout) = {
     this.workouts = this.workouts + workout
-    //findById(workout.id).map( oldWorkout =>
-    //  this.workouts = this.workouts - oldWorkout + workout
-    //).getOrElse(
-     //   throw new IllegalArgumentException("Workout not found")
-     // )
   }
+
+  def edit(workout: Workout){
+    findById(workout.id).map( oldWorkout =>
+      this.workouts = this.workouts - oldWorkout + workout
+    ).getOrElse(
+        throw new IllegalArgumentException("Workout not found")
+      )
+  }
+
+  def delete(workout: Workout){
+    findById(workout.id).map( oldWorkout =>
+      this.workouts = this.workouts - oldWorkout
+    ).getOrElse(
+        throw new IllegalArgumentException("Workout not found")
+      )
+  }
+
 }
