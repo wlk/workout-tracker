@@ -1,6 +1,5 @@
 package controllers
 
-import models.Workout._
 import org.joda.time.DateTime
 import play.api.mvc._
 import play.api.mvc.Controller
@@ -10,12 +9,17 @@ import models._
 import play.api.Logger
 
 object Workouts extends Controller {
+  val dateFormat = org.joda.time.format.ISODateTimeFormat.dateTime()
+
 
   //Product to Json
   implicit object workoutWrites extends Writes[Workout] {
     def writes(w: Workout) = Json.obj(
       "name" -> Json.toJson(w.name),
-      "distanceMeters" -> Json.toJson(w.distanceMeters)
+      "distanceMeters" -> Json.toJson(w.distanceMeters),
+      "date" -> Json.toJson(w.date.toString()),
+      "durationSeconds" -> Json.toJson(w.durationSeconds),
+      "pace" -> Json.toJson( w.distanceMeters / w.durationSeconds + "m/s" )
     )
   }
 
@@ -30,13 +34,14 @@ object Workouts extends Controller {
     )(Workout.apply _)
 
   def index() = Action {
-    val workoutIds = Workout.findAll.map(_.id)
-    Ok(Json.toJson(workoutIds))
+    val workouts = Workout.findAll
+
+    Ok(Json.arr(workouts))
   }
 
   def thisWeek() = Action {
-    val workoutIds = Workout.findAll.map(_.id)
-    Ok(Json.toJson(workoutIds))
+    val workouts = Workout.findAll.map { workouts => workouts }
+    Ok(Json.toJson(workouts))
   }
 
 
@@ -54,10 +59,10 @@ object Workouts extends Controller {
         Ok("saved")
       }
       catch {
-        case e: IllegalArgumentException => BadRequest("Product not found")
+        case e: IllegalArgumentException => BadRequest("Workout not found")
         case e: Exception => {
           Logger.info("exception = %s" format e)
-          BadRequest("Invalid EAN")
+          BadRequest("Invalid Request")
         }
       }
   }
