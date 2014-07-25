@@ -1,16 +1,16 @@
 <div class="row">
-    <div ng-controller="AddWorkoutCtrl as addWorkout">
-        <h1>Add Workout</h1>
+    <div ng-controller="EditWorkoutCtrl as editWorkout">
+        <h1>Edit Workout</h1>
 
-        <form id="AddWorkoutForm" name="AddWorkoutForm" class="form-horizontal" role="form"
-              ng-submit="addWorkout.addWorkout()">
+        <form id="editWorkoutForm" name="editWorkoutForm" class="form-horizontal" role="form"
+              ng-submit="editWorkout.editWorkout()">
             <legend class="sm-col-12">Basic Information</legend>
 
             <div class="form-group">
-                <label id="lbl_workoutName"  class="col-sm-4 control-label">Workout name</label>
+                <label id="lbl_workoutName" class="col-sm-4 control-label">Workout name</label>
 
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" name="workoutName" id="workoutName" placeholder="" ng-model="addWorkout.workout.name">
+                    <input type="text" class="form-control" name="workoutName" id="workoutName" placeholder="{{editWorkout.workout.name}}" ng-model="addWorkout.workout.name">
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
             </div>
 
 
-            <pre>{{ addWorkout.workout | json }}</pre>
+            <pre>{{ editWorkout.workout | json }}</pre>
 
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-8 text-right">

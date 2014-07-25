@@ -10,7 +10,7 @@ class WorkoutCtrl
   getAllWorkouts: () ->
     @$log.debug "getAllWorkouts()"
 
-    @WorkoutService.listWorkouts()
+    @WorkoutService.allWorkouts()
     .then(
       (data) =>
         @$log.debug "Promise returned #{data.length} Workouts"

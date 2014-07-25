@@ -6,7 +6,7 @@ class WorkoutService
   constructor: (@$log, @$http, @$q) ->
     @$log.debug "constructing WorkoutService"
 
-  listWorkouts: () ->
+  allWorkouts: () ->
     @$log.debug "listWorkouts()"
     deferred = @$q.defer()
 
@@ -17,6 +17,21 @@ class WorkoutService
     )
     .error((data, status, headers) =>
       @$log.error("Failed to list workouts - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
+
+  getWorkout: (id) ->
+    @$log.debug "getWorkout()"
+    deferred = @$q.defer()
+
+    @$http.get("/api/workouts/" + id)
+    .success((data, status, headers) =>
+      @$log.info("Successfully got workout - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed togot workout - status #{status}")
       deferred.reject(data);
     )
     deferred.promise
@@ -40,7 +55,22 @@ class WorkoutService
     @$log.debug "addWorkout"
     deferred = @$q.defer()
 
-    @$http.post('/api/workout/new', workout)
+    @$http.post('/api/workouts/new', workout)
+    .success((data, status, headers) =>
+      @$log.info("Successfully created workout - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to create workout - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
+
+  editWorkout: (workout, id) ->
+    @$log.debug "editWorkout"
+    deferred = @$q.defer()
+
+    @$http.get('/api/workouts/' + id, workout)
     .success((data, status, headers) =>
       @$log.info("Successfully created workout - status #{status}")
       deferred.resolve(data)

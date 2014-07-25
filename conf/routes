@@ -13,7 +13,7 @@ POST          /api/workouts/:id              controllers.Workouts.edit(id: Int)
 #delete given workout
 DELETE        /api/workouts/:id              controllers.Workouts.delete(id: Int)
 #create new workout
-POST          /api/workout/new                   controllers.Workouts.add
+POST          /api/workouts/new                   controllers.Workouts.add
 
 
 #report for current week
