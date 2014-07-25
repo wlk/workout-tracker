@@ -9,8 +9,6 @@ import play.api.libs.json._
 object Report extends Controller {
   val formatter = new DecimalFormat("#.#")
 
-
-
   def thisWeek  = Action  {
     val workouts = Workout.findAll
     val totalDistance = workouts.map( w => w.distanceMeters).sum

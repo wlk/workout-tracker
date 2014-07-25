@@ -40,7 +40,7 @@ class WorkoutService
     @$log.debug "addWorkout"
     deferred = @$q.defer()
 
-    @$http.post('/api/workout', workout)
+    @$http.post('/api/workout/new', workout)
     .success((data, status, headers) =>
       @$log.info("Successfully created workout - status #{status}")
       deferred.resolve(data)

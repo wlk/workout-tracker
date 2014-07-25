@@ -23,6 +23,7 @@
                     <th>Distance</th>
                     <th>Time</th>
                     <th>Speed</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,12 +43,16 @@
                     <td>
                         {{ workout.speed }}
                     </td>
+                    <td>
+                        <a ng-href="/#/workout/{{ workout.id }}" class="btn btn-primary pull-right" id="btn_workout_edit">Edit</a>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">Summary</td>
                     <td>{{wc.report.totalDistance}}</td>
                     <td>{{wc.report.totalTime}}</td>
                     <td>{{wc.report.avgSpeed}}</td>
+                    <td></td>
                 </tr>
                 <tr ng-hide="wc.workouts.length">
                     <td colspan="5">

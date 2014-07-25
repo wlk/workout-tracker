@@ -17,6 +17,7 @@ object Workouts extends Controller {
   //Product to Json
   implicit object workoutWrites extends Writes[Workout] {
     def writes(w: Workout) = Json.obj(
+      "id" -> Json.toJson(w.id),
       "name" -> Json.toJson(w.name),
       "distanceMeters" -> Json.toJson(w.distanceMeters),
       "date" -> Json.toJson(w.date.toString()),
@@ -28,11 +29,11 @@ object Workouts extends Controller {
   //Json to Product
   implicit val workoutReads: Reads[Workout] = (
     (JsPath \ "id").read[Long] and
-    (JsPath \ "userId").read[Int] and
-    (JsPath \ "name").read[String] and
-    (JsPath \ "date").read[DateTime] and
-    (JsPath \ "distanceMeters").read[Int] and
-    (JsPath \ "durationSeconds").read[Int]
+      (JsPath \ "userId").read[Int] and
+      (JsPath \ "name").read[String] and
+      (JsPath \ "date").read[DateTime] and
+      (JsPath \ "distanceMeters").read[Int] and
+      (JsPath \ "durationSeconds").read[Int]
     )(Workout.apply _)
 
 
@@ -44,7 +45,10 @@ object Workouts extends Controller {
 
   def list(from: String, to: String) = play.mvc.Results.TODO
 
-  def show(id: Int) = play.mvc.Results.TODO
+  def show(id: Int) = Action {
+    val workout = Workout.findById(id)
+    Ok(Json.toJson(workout))
+  }
 
 
   def add() = Action(parse.json) {

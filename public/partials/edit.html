@@ -1,0 +1,72 @@
+<div class="row">
+    <div ng-controller="AddWorkoutCtrl as addWorkout">
+        <h1>Add Workout</h1>
+
+        <form id="AddWorkoutForm" name="AddWorkoutForm" class="form-horizontal" role="form"
+              ng-submit="addWorkout.addWorkout()">
+            <legend class="sm-col-12">Basic Information</legend>
+
+            <div class="form-group">
+                <label id="lbl_workoutName"  class="col-sm-4 control-label">Workout name</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="workoutName" id="workoutName" placeholder="" ng-model="addWorkout.workout.name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lbl_workoutId"  class="col-sm-4 control-label">Workout id</label>
+
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" name="workoutId" id="workoutId" placeholder="" ng-model="addWorkout.workout.id">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lbl_workoutUserId"  class="col-sm-4 control-label">Workout user id</label>
+
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" name="workoutUserId" id="workoutUserId" placeholder="" ng-model="addWorkout.workout.userId">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lbl_workoutDate"  class="col-sm-4 control-label">Workout date</label>
+
+                <div class="col-sm-8">
+                    <input type="date" class="form-control" name="workoutDate" id="workoutDate" placeholder="" ng-model="addWorkout.workout.date">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lbl_workoutDistanceMeters"  class="col-sm-4 control-label">Workout distance (meters)</label>
+
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" name="workoutDistanceMeters" id="workoutDistanceMeters" placeholder="" ng-model="addWorkout.workout.distanceMeters">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lbl_workoutDurationSeconds"  class="col-sm-4 control-label">Workout time (seconds)</label>
+
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" name="workoutDurationSeconds" id="workoutDurationSeconds" placeholder="" ng-model="addWorkout.workout.durationSeconds">
+                </div>
+            </div>
+
+
+            <pre>{{ addWorkout.workout | json }}</pre>
+
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-8 text-right">
+                    <a ng-href="/#/" id="btn_cancel" class="btn btn-warning">Cancel</a>
+
+                    <button type="submit" class="btn btn-success" id="btn_create">Save</button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
