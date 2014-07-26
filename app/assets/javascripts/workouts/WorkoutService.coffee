@@ -22,7 +22,7 @@ class WorkoutService
     deferred.promise
 
   getWorkoutsInRange: (startDate, endDate) ->
-    @$log.debug "getWorkoutsInRange() " + startDate + ", endDate: " + endDate
+    @$log.debug "WorkoutService getWorkoutsInRange() " + startDate + ", endDate: " + endDate
     deferred = @$q.defer()
 
     @$http.get("/api/workouts/" + startDate + "/" + endDate)
@@ -32,6 +32,21 @@ class WorkoutService
     )
     .error((data, status, headers) =>
       @$log.error("Failed to list workouts - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
+
+  getSummaryInRange: (startDate, endDate) ->
+    @$log.debug "WorkoutService getSummaryInRange() " + startDate + ", endDate: " + endDate
+    deferred = @$q.defer()
+
+    @$http.get("/api/summary/" + startDate + "/" + endDate)
+    .success((data, status, headers) =>
+      @$log.info("Successfully getSummaryInRange - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to getSummaryInRange - status #{status}")
       deferred.reject(data);
     )
     deferred.promise
@@ -51,17 +66,17 @@ class WorkoutService
     )
     deferred.promise
 
-  getReport: () ->
-    @$log.debug "getReport()"
+  getSummary: () ->
+    @$log.debug "getSummary()"
     deferred = @$q.defer()
 
     @$http.get("/api/summary")
     .success((data, status, headers) =>
-      @$log.info("Successfully got report #{status}")
+      @$log.info("Successfully got summary #{status}")
       deferred.resolve(data)
     )
     .error((data, status, headers) =>
-      @$log.error("Failed to get report status #{status}")
+      @$log.error("Failed to get summary status #{status}")
       deferred.reject(data);
     )
     deferred.promise

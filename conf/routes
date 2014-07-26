@@ -8,7 +8,7 @@ GET           /report                        controllers.Application.report
 POST          /api/workouts/new              controllers.Workouts.add
 
 #default workout list
-GET           /api/workouts                  controllers.Workouts.thisWeek
+GET           /api/workouts                  controllers.Workouts.all
 #list showing workouts in given date range
 GET           /api/workouts/:from/:to        controllers.Workouts.list(from: String, to: String)
 #detailed view of specific workout
@@ -20,7 +20,7 @@ DELETE        /api/workouts/:id              controllers.Workouts.delete(id: Int
 
 
 #report for current week
-GET           /api/summary                   controllers.Summary.thisWeek
+GET           /api/summary                   controllers.Summary.all
 #display report for each week in given range
 GET           /api/summary/:from/:to         controllers.Summary.list(from: String, to: String)
 

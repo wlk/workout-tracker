@@ -1,8 +1,6 @@
 package controllers
 
 import java.text.DecimalFormat
-
-import org.joda.time.DateTime
 import play.api.mvc._
 import play.api.mvc.Controller
 import play.api.libs.json._
@@ -11,6 +9,7 @@ import models._
 import play.api.Logger
 
 object Workouts extends Controller {
+
   val dateFormat = org.joda.time.format.ISODateTimeFormat.dateTime()
   val formatter = new DecimalFormat("#.#")
 
@@ -38,31 +37,37 @@ object Workouts extends Controller {
     )(Workout.apply _)
 
 
-  def thisWeek() = Action {
+  def all() = Action {
     val workouts = Workout.findAll.map { workouts => workouts }
     Ok(Json.toJson(workouts))
   }
 
-
-  def list(from: String, to: String) = thisWeek()
-
+  def list(from: String, to: String) = Action {
+    val workouts = Workout.getRange(from, to)
+    Ok(Json.toJson(workouts))
+  }
 
   def show(id: Int) = Action {
     val workout = Workout.findById(id)
     Ok(Json.toJson(workout))
   }
 
-
   def add() = Action(parse.json) {
     request =>
       try {
         val workoutJson = request.body
         val workout = workoutJson.as[Workout]
-        Workout.add(workout)
-        Ok("saved")
+
+        if(Workout.exists(workout.id)){
+          throw new IllegalArgumentException("workout exists")
+        }
+        else {
+          Workout.add(workout)
+          Ok("added")
+        }
       }
       catch {
-        case e: IllegalArgumentException => BadRequest("Workout not found")
+        case e: IllegalArgumentException => BadRequest("Workout already exists")
         case e: Exception => {
           Logger.info("exception = %s" format e)
           BadRequest("Invalid Request")
@@ -70,7 +75,9 @@ object Workouts extends Controller {
       }
   }
 
+
   def edit(id: Int) = Action(parse.json){
+    //at the moment the id parameter is ignored, and api looks only at what was passed in json object
     request =>
       try {
         val workoutJson = request.body
