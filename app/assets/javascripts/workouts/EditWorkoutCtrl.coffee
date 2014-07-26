@@ -17,7 +17,6 @@ class EditWorkoutCtrl
       @$log.error "fillWorkout returned error: #{error}"
     )
 
-
   editWorkout: () ->
     id = @$location.path().replace("/workout/", "") #possibly not ideal, but don't know how to do this in AngularJS right now
     @$log.debug "editWorkout() " + id

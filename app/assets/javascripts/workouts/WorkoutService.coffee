@@ -21,6 +21,21 @@ class WorkoutService
     )
     deferred.promise
 
+  getWorkoutsInRange: (startDate, endDate) ->
+    @$log.debug "getWorkoutsInRange() " + startDate + ", endDate: " + endDate
+    deferred = @$q.defer()
+
+    @$http.get("/api/workouts/" + startDate + "/" + endDate)
+    .success((data, status, headers) =>
+      @$log.info("Successfully listed workouts - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to list workouts - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
+
   getWorkout: (id) ->
     @$log.debug "getWorkout()"
     deferred = @$q.defer()

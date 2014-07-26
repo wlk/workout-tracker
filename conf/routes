@@ -4,6 +4,7 @@ GET           /report                        controllers.Application.report
 
 
 #REST API
+#create new workout
 POST          /api/workouts/new              controllers.Workouts.add
 
 #default workout list
@@ -16,14 +17,18 @@ GET           /api/workouts/:id              controllers.Workouts.show(id: Int)
 POST          /api/workouts/:id              controllers.Workouts.edit(id: Int)
 #delete given workout
 DELETE        /api/workouts/:id              controllers.Workouts.delete(id: Int)
-#create new workout
 
 
 #report for current week
-GET           /api/summary                   controllers.Report.thisWeek
+GET           /api/summary                   controllers.Summary.thisWeek
 #display report for each week in given range
-GET           /api/summary/:from/:to         controllers.Report.list(from: String, to: String)
+GET           /api/summary/:from/:to         controllers.Summary.list(from: String, to: String)
 
+
+#report for current week
+GET           /api/report                   controllers.Report.thisWeek
+#display report for each week in given range
+GET           /api/report/:from/:to         controllers.Report.list(from: String, to: String)
 
 
 # Map static resources from the /public folder to the /assets URL path

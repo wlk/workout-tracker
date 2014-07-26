@@ -44,7 +44,8 @@ object Workouts extends Controller {
   }
 
 
-  def list(from: String, to: String) = play.mvc.Results.TODO
+  def list(from: String, to: String) = thisWeek()
+
 
   def show(id: Int) = Action {
     val workout = Workout.findById(id)
