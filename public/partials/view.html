@@ -9,85 +9,78 @@
         <div class="form-group">
             <h3>
                 Workouts
-                <a ng-href="/#/workout/add" class="btn btn-primary pull-right" id="btn_workout_add">Add Workout</a>
-                <table id="workout_list" class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Distance</th>
-                        <th>Time</th>
-                        <th>Speed</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="workout in wc.workouts">
-                        <td>
-                            {{ workout.name }}
-                        </td>
-                        <td>
-                            {{ workout.date }}
-                        </td>
-                        <td>
-                            {{ workout.distanceMeters }}
-                        </td>
-                        <td>
-                            {{ workout.durationSeconds }}
-                        </td>
-                        <td>
-                            {{ workout.speed }}
-                        </td>
-                        <td>
-                            <a ng-href="/#/workout/{{ workout.id }}" class="btn btn-primary pull-right" id="btn_workout_edit">Edit</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Summary</td>
-                        <td>{{wc.report.totalDistance}}</td>
-                        <td>{{wc.report.totalTime}}</td>
-                        <td>{{wc.report.avgSpeed}}</td>
-                        <td></td>
-                    </tr>
-                    <tr ng-hide="wc.workouts.length">
-                        <td colspan="5">
-                            <p class="text-center">No Workouts found</p>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <hr>
+            </h3>
+            <a ng-href="/#/workout/add" class="btn btn-primary pull-right" id="btn_workout_add">Add Workout</a>
+            <table id="workout_list" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Distance</th>
+                    <th>Time</th>
+                    <th>Speed</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="workout in wc.workouts">
+                    <td>
+                        {{ workout.name }}
+                    </td>
+                    <td>
+                        {{ workout.date }}
+                    </td>
+                    <td>
+                        {{ workout.distanceMeters }}
+                    </td>
+                    <td>
+                        {{ workout.durationSeconds }}
+                    </td>
+                    <td>
+                        {{ workout.speed }}
+                    </td>
+                    <td>
+                        <a ng-href="/#/workout/{{ workout.id }}" class="btn btn-primary pull-right" id="btn_workout_edit">Edit</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">Summary</td>
+                    <td>{{wc.report.totalDistance}}</td>
+                    <td>{{wc.report.totalTime}}</td>
+                    <td>{{wc.report.avgSpeed}}</td>
+                    <td></td>
+                </tr>
+                <tr ng-hide="wc.workouts.length">
+                    <td colspan="5">
+                        <p class="text-center">No Workouts found</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <hr>
 
+            <div class="form-group">
+                <label id="lbl_startDate"  class="col-sm-4 control-label">Start Date</label>
 
-                <form id="filterForm" name="filterForm" class="form-horizontal" role="form" ng-submit="wc.getWorkoutsInRange()">
-                    <div class="form-group">
-                        <label id="lbl_startDate"  class="col-sm-4 control-label">Start Date</label>
+                <div class="col-sm-8">
+                    <input type="date" class="form-control" name="startDate" id="startDate"
+                           placeholder="{{ wc.startDate }}" ng-model="wc.startDate">
+                </div>
+            </div>
 
-                        <div class="col-sm-8">
-                            <input type="date" class="form-control" name="startDate" id="startDate"
-                                   placeholder="{{ wc.startDate }}" ng-model="wc.startDate">
-                        </div>
-                    </div>
+            <div class="form-group">
+                <label id="lbl_endDate"  class="col-sm-4 control-label">End Date</label>
 
-                    <div class="form-group">
-                        <label id="lbl_endDate"  class="col-sm-4 control-label">End Date</label>
+                <div class="col-sm-8">
+                    <input type="date" class="form-control" name="endDate" id="endDate"
+                           placeholder="{{ wc.endDate }}" ng-model="wc.endDate">
+                </div>
+            </div>
+            <a ng-href="/#/{{ wc.startDate }}/{{ wc.endDate }}" class="btn btn-primary pull-right" id="btn_filter">Filter</a>
 
-                        <div class="col-sm-8">
-                            <input type="date" class="form-control" name="endDate" id="endDate"
-                                   placeholder="{{ endDate }}" ng-model="wc.endDate">
-                        </div>
-                    </div>
-                    <a ng-href="/#/{{ wc.startDate }}/{{ wc.endDate }}" class="btn btn-primary pull-right" id="btn_filter">Filter</a>
+            <hr>
 
-                    <div class="form-group">
-                        <div class="col-sm-offset-4 col-sm-8 text-right">
-                            <button class="btn btn-success" id="btn_submit">Filter</button>
-                        </div>
-                    </div>
-
-                </form>
-                <h4>Debug:</h4>
-                <pre>{{ wc.workouts | json }}</pre>
         </div>
 
     </div>
+</div>

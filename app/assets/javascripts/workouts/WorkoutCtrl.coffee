@@ -3,15 +3,14 @@ class WorkoutCtrl
   constructor: (@$log, @$location, @WorkoutService) ->
     @$log.debug "constructing WorkoutCtrl"
     @workouts = []
-    @getAllWorkouts()
     @report = []
     @getReport()
     @startDate = ""
     @endDate = ""
+    @getWorkouts()
 
   getAllWorkouts: () ->
     @$log.debug "getAllWorkouts()"
-
     @WorkoutService.allWorkouts()
     .then(
       (data) =>
@@ -22,12 +21,8 @@ class WorkoutCtrl
       @$log.error "Unable to get Workouts: #{error}"
     )
 
-  getWorkoutsInRange: () ->
-    startDate = @$location.path().replace("/workout/", "").split("/")[1]
-    endDate = @$location.path().replace("/workout/", "").split("/")[2]
-
+  getWorkoutsInRange: (startDate, endDate) ->
     @$log.debug "getWorkoutsInRange()"
-
     @WorkoutService.getWorkoutsInRange(startDate, endDate)
     .then(
       (data) =>
@@ -38,9 +33,17 @@ class WorkoutCtrl
       @$log.error "Unable to get Workouts: #{error}"
     )
 
+  getWorkouts: () ->
+    @$log.debug "getWorkouts()"
+    @startDate = @$location.path().replace("/workout/", "").split("/")[1]
+    @endDate = @$location.path().replace("/workout/", "").split("/")[2]
+    if(@startDate == undefined || @endDate == undefined )
+      @getAllWorkouts()
+    else
+      @getWorkoutsInRange(@startDate, @endDate)
+
   getReport: () ->
     @$log.debug "getReport()"
-
     @WorkoutService.getReport()
     .then(
       (data) =>
@@ -50,6 +53,5 @@ class WorkoutCtrl
     (error) =>
       @$log.error "Unable to get report: #{error}"
     )
-
 
 controllersModule.controller('WorkoutCtrl', WorkoutCtrl)
