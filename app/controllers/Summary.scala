@@ -31,7 +31,6 @@ object Summary extends Controller {
         "avgSpeed" -> Json.toJson(avgSpeed)
       )
     )
-
     jsonObject
   }
 }

@@ -51,6 +51,36 @@ class WorkoutService
     )
     deferred.promise
 
+  getAllReports: () ->
+    @$log.debug "WorkoutService allReports()"
+    deferred = @$q.defer()
+
+    @$http.get("/api/report")
+    .success((data, status, headers) =>
+      @$log.info("Successfully listed workouts - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to list workouts - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
+
+  getReportsInRange: (startDate, endDate) ->
+    @$log.debug "WorkoutService getReportsInRange() " + startDate + ", endDate: " + endDate
+    deferred = @$q.defer()
+
+    @$http.get("/api/report/" + startDate + "/" + endDate)
+    .success((data, status, headers) =>
+      @$log.info("Successfully getReportsInRange - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to getReportsInRange - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
+
   getWorkout: (id) ->
     @$log.debug "getWorkout()"
     deferred = @$q.defer()
@@ -61,7 +91,7 @@ class WorkoutService
       deferred.resolve(data)
     )
     .error((data, status, headers) =>
-      @$log.error("Failed togot workout - status #{status}")
+      @$log.error("Failed to got workout - status #{status}")
       deferred.reject(data);
     )
     deferred.promise

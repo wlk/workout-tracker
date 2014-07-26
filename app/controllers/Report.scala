@@ -1,7 +1,13 @@
 package controllers
 
-object Report {
-  def thisWeek() = play.mvc.Results.TODO
+import play.api.mvc.{Action, Controller}
 
-  def list(from: String, to: String) = play.mvc.Results.TODO
+object Report extends Controller {
+  def thisWeek() = Action {
+    Ok("")
+  }
+
+  def list(from: String, to: String) = Action {
+    Ok("")
+  }
 }

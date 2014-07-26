@@ -8,6 +8,4 @@ object Application extends Controller {
   def index = Action {
     Ok(views.html.index())
   }
-
-  def report() = play.mvc.Results.TODO
 }

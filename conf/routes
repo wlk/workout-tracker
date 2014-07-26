@@ -1,7 +1,5 @@
 # Home page
 GET           /                              controllers.Application.index
-GET           /report                        controllers.Application.report
-
 
 #REST API
 #create new workout
