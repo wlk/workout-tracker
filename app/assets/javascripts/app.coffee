@@ -24,6 +24,12 @@ angular.module('myApp.routeConfig', ['ngRoute'])
   .when('/workout/:workoutId', {
       templateUrl: '/assets/partials/edit.html'
     })
+  .when('/report/:startDate/:endDate', {
+      templateUrl: '/assets/partials/report.html'
+    })
+  .when('/report', {
+      templateUrl: '/assets/partials/report.html'
+    })
   .when('/:startDate/:endDate', {
       templateUrl: '/assets/partials/view.html'
     })
