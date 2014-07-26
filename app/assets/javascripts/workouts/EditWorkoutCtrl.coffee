@@ -19,8 +19,9 @@ class EditWorkoutCtrl
 
 
   editWorkout: () ->
-    @$log.debug "editWorkout()"
-    @WorkoutService.editWorkout(@workout)
+    id = @$location.path().replace("/workout/", "") #possibly not ideal, but don't know how to do this in AngularJS right now
+    @$log.debug "editWorkout() " + id
+    @WorkoutService.editWorkout(@workout, id)
     .then(
       (data) =>
         @$log.debug "Promise returned #{data} Workout"
@@ -28,7 +29,22 @@ class EditWorkoutCtrl
         @$location.path("/")
     ,
     (error) =>
-      @$log.error "Unable to add Workout: #{error}"
+      @$log.error "Unable to edit Workout: #{error}"
     )
+
+  deleteWorkout: () ->
+    id = @$location.path().replace("/workout/", "") #possibly not ideal, but don't know how to do this in AngularJS right now
+    @$log.debug "deleteWorkout() " + id
+    @WorkoutService.deleteWorkout(@workout, id)
+    .then(
+      (data) =>
+        @$log.debug "Promise returned #{data} Workout"
+        @workout = data
+        @$location.path("/")
+    ,
+    (error) =>
+      @$log.error "Unable to remove Workout: #{error}"
+    )
+
 
 controllersModule.controller('EditWorkoutCtrl', EditWorkoutCtrl)

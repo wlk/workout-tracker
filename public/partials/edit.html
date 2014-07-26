@@ -10,7 +10,8 @@
                 <label id="lbl_workoutName" class="col-sm-4 control-label">Workout name</label>
 
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" name="workoutName" id="workoutName" placeholder="{{editWorkout.workout.name}}" ng-model="addWorkout.workout.name">
+                    <input type="text" class="form-control" name="workoutName" id="workoutName"
+                           placeholder="{{editWorkout.workout.name}}" ng-model="editWorkout.workout.name">
                 </div>
             </div>
 
@@ -18,7 +19,8 @@
                 <label id="lbl_workoutId"  class="col-sm-4 control-label">Workout id</label>
 
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" name="workoutId" id="workoutId" placeholder="" ng-model="addWorkout.workout.id">
+                    <input type="number" class="form-control" name="workoutId" id="workoutId"
+                           placeholder="{{editWorkout.workout.id}}" ng-model="editWorkout.workout.id">
                 </div>
             </div>
 
@@ -26,7 +28,8 @@
                 <label id="lbl_workoutUserId"  class="col-sm-4 control-label">Workout user id</label>
 
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" name="workoutUserId" id="workoutUserId" placeholder="" ng-model="addWorkout.workout.userId">
+                    <input type="number" class="form-control" name="workoutUserId" id="workoutUserId"
+                           placeholder="{{editWorkout.workout.userId}}" ng-model="editWorkout.workout.userId">
                 </div>
             </div>
 
@@ -34,7 +37,8 @@
                 <label id="lbl_workoutDate"  class="col-sm-4 control-label">Workout date</label>
 
                 <div class="col-sm-8">
-                    <input type="date" class="form-control" name="workoutDate" id="workoutDate" placeholder="" ng-model="addWorkout.workout.date">
+                    <input type="date" class="form-control" name="workoutDate" id="workoutDate"
+                           placeholder="{{editWorkout.workout.date}}" ng-model="editWorkout.workout.date">
                 </div>
             </div>
 
@@ -42,7 +46,8 @@
                 <label id="lbl_workoutDistanceMeters"  class="col-sm-4 control-label">Workout distance (meters)</label>
 
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" name="workoutDistanceMeters" id="workoutDistanceMeters" placeholder="" ng-model="addWorkout.workout.distanceMeters">
+                    <input type="number" class="form-control" name="workoutDistanceMeters" id="workoutDistanceMeters"
+                           placeholder="{{editWorkout.workout.distanceMeters}}" ng-model="editWorkout.workout.distanceMeters">
                 </div>
             </div>
 
@@ -50,7 +55,8 @@
                 <label id="lbl_workoutDurationSeconds"  class="col-sm-4 control-label">Workout time (seconds)</label>
 
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" name="workoutDurationSeconds" id="workoutDurationSeconds" placeholder="" ng-model="addWorkout.workout.durationSeconds">
+                    <input type="number" class="form-control" name="workoutDurationSeconds" id="workoutDurationSeconds"
+                           placeholder="{{editWorkout.workout.durationSeconds}}" ng-model="editWorkout.workout.durationSeconds">
                 </div>
             </div>
 
@@ -62,10 +68,13 @@
                     <a ng-href="/#/" id="btn_cancel" class="btn btn-warning">Cancel</a>
 
                     <button type="submit" class="btn btn-success" id="btn_create">Save</button>
+
                 </div>
             </div>
+        </form>
 
-
+        <form id="deleteWorkoutForm" name="deleteWorkoutForm" class="form-horizontal" role="form" ng-submit="editWorkout.deleteWorkout()">
+            <button class="btn btn-danger" id="btn_delete">Delete</button>
         </form>
     </div>
 </div>

@@ -9,4 +9,5 @@ object Application extends Controller {
     Ok(views.html.index())
   }
 
+  def report() = play.mvc.Results.TODO
 }

@@ -1,7 +1,11 @@
 # Home page
 GET           /                              controllers.Application.index
+GET           /report                        controllers.Application.report
+
 
 #REST API
+POST          /api/workouts/new              controllers.Workouts.add
+
 #default workout list
 GET           /api/workouts                  controllers.Workouts.thisWeek
 #list showing workouts in given date range
@@ -13,13 +17,12 @@ POST          /api/workouts/:id              controllers.Workouts.edit(id: Int)
 #delete given workout
 DELETE        /api/workouts/:id              controllers.Workouts.delete(id: Int)
 #create new workout
-POST          /api/workouts/new                   controllers.Workouts.add
 
 
 #report for current week
-GET           /api/report                    controllers.Report.thisWeek
+GET           /api/summary                   controllers.Report.thisWeek
 #display report for each week in given range
-GET           /api/report/:from/:to          controllers.Report.list(from: String, to: String)
+GET           /api/summary/:from/:to         controllers.Report.list(from: String, to: String)
 
 
 

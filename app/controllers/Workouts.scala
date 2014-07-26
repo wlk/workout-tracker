@@ -19,6 +19,7 @@ object Workouts extends Controller {
     def writes(w: Workout) = Json.obj(
       "id" -> Json.toJson(w.id),
       "name" -> Json.toJson(w.name),
+      "userId" -> Json.toJson(w.userId),
       "distanceMeters" -> Json.toJson(w.distanceMeters),
       "date" -> Json.toJson(w.date.toString()),
       "durationSeconds" -> Json.toJson(w.durationSeconds),
@@ -31,7 +32,7 @@ object Workouts extends Controller {
     (JsPath \ "id").read[Long] and
       (JsPath \ "userId").read[Int] and
       (JsPath \ "name").read[String] and
-      (JsPath \ "date").read[DateTime] and
+      (JsPath \ "date").read[String] and
       (JsPath \ "distanceMeters").read[Int] and
       (JsPath \ "durationSeconds").read[Int]
     )(Workout.apply _)
@@ -68,7 +69,35 @@ object Workouts extends Controller {
       }
   }
 
-  def edit(id: Int) = play.mvc.Results.TODO
+  def edit(id: Int) = Action(parse.json){
+    request =>
+      try {
+        val workoutJson = request.body
+        val workout = workoutJson.as[Workout]
+        Workout.edit(workout)
+        Ok("edited")
+      }
+      catch {
+        case e: IllegalArgumentException => BadRequest("Workout not found")
+        case e: Exception => {
+          Logger.info("exception = %s" format e)
+          BadRequest("Invalid Request")
+        }
+      }
+  }
 
-  def delete(id: Int) = play.mvc.Results.TODO
+  def delete(id: Int) = Action {
+    request =>
+      try {
+        Workout.delete(id)
+        Ok("deleted")
+      }
+      catch {
+        case e: IllegalArgumentException => BadRequest("Workout not found")
+        case e: Exception => {
+          Logger.info("exception = %s" format e)
+          BadRequest("Invalid Request")
+        }
+      }
+  }
 }

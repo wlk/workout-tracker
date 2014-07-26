@@ -40,7 +40,7 @@ class WorkoutService
     @$log.debug "getReport()"
     deferred = @$q.defer()
 
-    @$http.get("/api/report")
+    @$http.get("/api/summary")
     .success((data, status, headers) =>
       @$log.info("Successfully got report #{status}")
       deferred.resolve(data)
@@ -67,16 +67,31 @@ class WorkoutService
     deferred.promise
 
   editWorkout: (workout, id) ->
-    @$log.debug "editWorkout"
+    @$log.debug "editWorkout: " + id
     deferred = @$q.defer()
 
-    @$http.get('/api/workouts/' + id, workout)
+    @$http.post('/api/workouts/' + id, workout)
     .success((data, status, headers) =>
       @$log.info("Successfully created workout - status #{status}")
       deferred.resolve(data)
     )
     .error((data, status, headers) =>
       @$log.error("Failed to create workout - status #{status}")
+      deferred.reject(data);
+    )
+    deferred.promise
+
+  deleteWorkout: (workout, id) ->
+    @$log.debug "deleteWorkout: " + id
+    deferred = @$q.defer()
+
+    @$http.delete('/api/workouts/' + id, workout)
+    .success((data, status, headers) =>
+      @$log.info("Successfully deleted workout - status #{status}")
+      deferred.resolve(data)
+    )
+    .error((data, status, headers) =>
+      @$log.error("Failed to delete workout - status #{status}")
       deferred.reject(data);
     )
     deferred.promise
