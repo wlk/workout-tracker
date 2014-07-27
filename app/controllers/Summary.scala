@@ -9,7 +9,7 @@ import play.api.libs.json._
 object Summary extends Controller {
   val formatter = new DecimalFormat("#.#")
 
-  def all = Action {
+  def thisWeek = Action {
     val workouts = Workout.findAll
     Ok(getSummary(workouts))
   }

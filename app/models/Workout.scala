@@ -1,9 +1,6 @@
 package models
 
-import java.text.SimpleDateFormat
-
 import com.github.nscala_time.time.Imports._
-import play.api.libs.json.Json
 
 case class Workout(id: Long, userId: Int, name: String, date: String, distanceMeters: Int, durationSeconds: Int)
 

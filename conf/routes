@@ -18,15 +18,15 @@ DELETE        /api/workouts/:id              controllers.Workouts.delete(id: Int
 
 
 #report for current week
-GET           /api/summary                   controllers.Summary.all
+GET           /api/summary                   controllers.Summary.thisWeek
 #display report for each week in given range
 GET           /api/summary/:from/:to         controllers.Summary.list(from: String, to: String)
 
 
 #report for current week
-GET           /api/report                    controllers.Report.thisWeek
+GET           /api/report                    controllers.Reports.thisWeek
 #display report for each week in given range
-GET           /api/report/:from/:to          controllers.Report.list(from: String, to: String)
+GET           /api/report/:from/:to          controllers.Reports.list(from: String, to: String)
 
 
 # Map static resources from the /public folder to the /assets URL path
