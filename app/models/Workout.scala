@@ -6,6 +6,18 @@ import play.api.libs.functional.syntax._
 import java.text.DecimalFormat
 
 case class Workout(id: Int, userId: Int, name: String, date: String, distanceMeters: Int, durationSeconds: Int)
+case class IncomingWorkout(name: String, date: String, distanceMeters: Int, durationSeconds: Int)
+
+object IncomingWorkout{
+  //Json to IncomingWorkout
+  implicit val workoutReads: Reads[IncomingWorkout] = (
+    (JsPath \ "name").read[String] and
+      (JsPath \ "date").read[String] and
+      (JsPath \ "distanceMeters").read[Int] and
+      (JsPath \ "durationSeconds").read[Int]
+    )(IncomingWorkout.apply _)
+}
+
 
 object Workout {
 
@@ -17,25 +29,29 @@ object Workout {
 
   val formatter = new DecimalFormat("#.#")
 
-  def add(email: String, workout: Workout) = {
+  def add(email: String, incomingWorkout: IncomingWorkout) = {
     val user = User.findByEmail(email).get
-    addOrEdit(user, workout)
+    val newId = workouts.map(w => w.id).max + 1
+    val workout = Workout(newId, user.userId, incomingWorkout.name, incomingWorkout.date, incomingWorkout.distanceMeters, incomingWorkout.durationSeconds)
+
+    if(!exists(workout.id)){
+      this.workouts = this.workouts + workout
+    }
+
   }
 
-  def edit(email: String, workout: Workout) = {
+  def edit(email: String, incomingWorkout: IncomingWorkout, id: Int) = {
     val user = User.findByEmail(email).get
-    addOrEdit(user, workout)
+    if(exists(id)) {
+      val oldWorkout = findByIdForUser(user, id).get
+      val newWorkout = Workout(id, user.userId, incomingWorkout.name, incomingWorkout.date, incomingWorkout.distanceMeters, incomingWorkout.durationSeconds)
+      this.workouts = this.workouts - oldWorkout + newWorkout
+    }
+
   }
 
   def exists(id: Int) = this.workouts.exists(_.id == id)
 
-  def addOrEdit(user: User, workout: Workout) = {
-    findByIdForUser(user, workout.id).map(oldWorkout =>
-      this.workouts = this.workouts - oldWorkout + workout
-    ).getOrElse(
-        this.workouts = this.workouts + workout
-      )
-  }
 
   def getRange(user: User, from: String, to: String) = {
     this.workouts.filter( w => w.date >= from && w.date <= to && w.userId == user.userId).toList
@@ -63,7 +79,7 @@ object Workout {
       )
   }
 
-  //Product to Json
+  //Worjout to Json
   implicit object workoutWrites extends Writes[Workout] {
     def writes(w: Workout) = Json.obj(
       "id" -> Json.toJson(w.id),
@@ -76,14 +92,6 @@ object Workout {
     )
   }
 
-  //Json to Product
-  implicit val workoutReads: Reads[Workout] = (
-    (JsPath \ "id").read[Int] and
-      (JsPath \ "userId").read[Int] and
-      (JsPath \ "name").read[String] and
-      (JsPath \ "date").read[String] and
-      (JsPath \ "distanceMeters").read[Int] and
-      (JsPath \ "durationSeconds").read[Int]
-    )(Workout.apply _)
+
 
 }

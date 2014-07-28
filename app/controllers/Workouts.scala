@@ -39,15 +39,10 @@ object Workouts extends Controller with Secured {
       request =>
         try {
           val workoutJson = request.body
-          val workout = workoutJson.as[Workout]
+          val workout = workoutJson.as[IncomingWorkout]
 
-          if (Workout.exists(workout.id)) {
-            throw new IllegalArgumentException("workout exists")
-          }
-          else {
-            Workout.add(email, workout)
-            Ok("added")
-          }
+          Workout.add(email, workout)
+          Ok("added")
         }
         catch {
           case e: IllegalArgumentException => BadRequest("Workout already exists")
@@ -64,8 +59,8 @@ object Workouts extends Controller with Secured {
     request =>
       try {
         val workoutJson = request.body
-        val workout = workoutJson.as[Workout]
-        Workout.edit(email, workout)
+        val workout = workoutJson.as[IncomingWorkout]
+        Workout.edit(email, workout, id)
         Ok("edited")
       }
       catch {
