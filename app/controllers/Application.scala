@@ -8,7 +8,7 @@ object Application extends Controller with Secured {
   def index = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
       Ok(views.html.index())
-    }.getOrElse(Forbidden)
+    }.getOrElse(Redirect(routes.Auth.login()))
   }
 
 }

@@ -4,6 +4,8 @@ GET           /                              controllers.Application.index
 GET           /login                         controllers.Auth.login
 POST          /login                         controllers.Auth.authenticate
 GET           /logout                        controllers.Auth.logout
+GET           /signup                        controllers.Auth.create
+
 
 #REST API
 #create new workout
@@ -31,6 +33,9 @@ GET           /api/summary/:from/:to         controllers.Summary.list(from: Stri
 GET           /api/report                    controllers.Reports.thisWeek
 #display report for each week in given range
 GET           /api/report/:from/:to          controllers.Reports.list(from: String, to: String)
+
+POST          /api/users/new                 controllers.Users.create
+
 
 
 # Map static resources from the /public folder to the /assets URL path

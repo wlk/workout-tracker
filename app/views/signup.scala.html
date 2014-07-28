@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Workout Tracker - please login</title>
+        <title>Workout Tracker - please create account</title>
         <link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))' rel='stylesheet' >
     </head>
     <body>
@@ -23,9 +23,9 @@
             </header>
             <br/><br/><br/>
 
-            @helper.form(routes.Auth.authenticate) {
+            @helper.form(routes.Auth.create) {
 
-                <h1>Sign in</h1>
+                <h1>Please create account</h1>
 
                 @form.globalError.map { error =>
                     <p class="error">
@@ -46,7 +46,7 @@
                     <input type="password" name="password" id="password" placeholder="Password">
                 </p>
                 <p>
-                    <button type="submit" id="loginbutton" class="btn btn-success" id="btn_success">Login</button>
+                    <button type="submit" id="signupbutton" class="btn btn-success" id="btn_success">Signup!</button>
                 </p>
 
             }
@@ -62,14 +62,6 @@
                 </footer>
             </div>
         </div>
-        <header>
-
-        </header>
-        
-
-
-
-            
     </body>
 </html>
     

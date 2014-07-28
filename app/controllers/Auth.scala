@@ -16,6 +16,18 @@ object Auth extends Controller {
     })
   )
 
+  val signupForm = Form(
+    tuple(
+      "email" -> text,
+      "password" -> text
+    ) verifying ("Invalid email or password", result => result match {
+      case (email, password) => {
+        User.create(email, password)
+        User.findByEmail(email).nonEmpty
+      }
+    })
+  )
+
   def index = Action {
     Ok(views.html.index())
   }
@@ -34,6 +46,13 @@ object Auth extends Controller {
     loginForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.login(formWithErrors)),
       user => Redirect(routes.Application.index).withSession("email" -> user._1)
+    )
+  }
+
+  def create = Action { implicit request =>
+    signupForm.bindFromRequest.fold(
+      formWithErrors => BadRequest(views.html.signup(formWithErrors)),
+      user => Redirect(routes.Application.index)
     )
   }
 }
