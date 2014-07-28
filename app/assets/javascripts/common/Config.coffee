@@ -1,1 +1,1 @@
-commonModule.value('version', '0.3')
+commonModule.value('version', '0.4')
