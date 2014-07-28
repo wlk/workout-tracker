@@ -9,8 +9,7 @@
             <table id="report_list" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Date</th>
+                    <th>Week of Year</th>
                     <th>Distance</th>
                     <th>Time</th>
                     <th>Speed</th>
@@ -18,8 +17,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="report in rc.reports">
-                    <td>{{ report.name }}</td>
-                    <td>{{ report.date }}</td>
+                    <td>{{ report.weekOfYear }}</td>
                     <td>{{ report.distanceMeters }}</td>
                     <td>{{ report.durationSeconds }}</td>
                     <td>{{ report.speed }}</td>

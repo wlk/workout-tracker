@@ -1,10 +1,15 @@
 package models
 
 import com.github.nscala_time.time.Imports._
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+import java.text.DecimalFormat
 
 case class Workout(id: Long, userId: Int, name: String, date: String, distanceMeters: Int, durationSeconds: Int)
 
 object Workout {
+  val formatter = new DecimalFormat("#.#")
+
 
   def add(workout: Workout) = addOrEdit(workout)
 
@@ -20,7 +25,6 @@ object Workout {
       )
   }
 
-
   def getRange(from: String, to: String) = {
     this.workouts.filter( w => w.date >= from && w.date <= to).toList
   }
@@ -29,6 +33,7 @@ object Workout {
     Workout(1L, 1, "morning run", DateTime.now.hour(6).toString("yyyy-MM-dd"), 100, 9),
     Workout(2L, 1, "evening run", DateTime.now.hour(18).toString("yyyy-MM-dd"), 2332, 322),
     Workout(3L, 1, "evening run last week", DateTime.now.day(18).toString("yyyy-MM-dd"), 100, 9),
+    Workout(3L, 1, "evening run previous week", DateTime.now.day(7).toString("yyyy-MM-dd"), 100, 9),
     Workout(4L, 2, "run for different user", DateTime.now.toString("yyyy-MM-dd"), 100, 9)
   )
 
@@ -44,5 +49,28 @@ object Workout {
       )
   }
 
+
+  //Product to Json
+  implicit object workoutWrites extends Writes[Workout] {
+    def writes(w: Workout) = Json.obj(
+      "id" -> Json.toJson(w.id),
+      "name" -> Json.toJson(w.name),
+      "userId" -> Json.toJson(w.userId),
+      "distanceMeters" -> Json.toJson(w.distanceMeters),
+      "date" -> Json.toJson(w.date.toString()),
+      "durationSeconds" -> Json.toJson(w.durationSeconds),
+      "speed" -> Json.toJson( formatter.format(1.0 * w.distanceMeters / w.durationSeconds) + " m/s" )
+    )
+  }
+
+  //Json to Product
+  implicit val workoutReads: Reads[Workout] = (
+    (JsPath \ "id").read[Long] and
+      (JsPath \ "userId").read[Int] and
+      (JsPath \ "name").read[String] and
+      (JsPath \ "date").read[String] and
+      (JsPath \ "distanceMeters").read[Int] and
+      (JsPath \ "durationSeconds").read[Int]
+    )(Workout.apply _)
 
 }

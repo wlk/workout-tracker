@@ -11,15 +11,15 @@ object Summary extends Controller {
 
   def thisWeek = Action {
     val workouts = Workout.findAll
-    Ok(getSummary(workouts))
+    Ok(toJson(workouts))
   }
 
   def list(from: String, to: String) = Action {
     val workouts = Workout.getRange(from, to)
-    Ok(getSummary(workouts))
+    Ok(toJson(workouts))
   }
 
-  def getSummary(w: List[Workout]) = {
+  def toJson(w: List[Workout]) = {
     val totalDistance = w.map( w => w.distanceMeters).sum
     val totalTime = w.map( w => w.durationSeconds).sum
     val avgSpeed = formatter.format(1.0 * totalDistance / totalTime) + " m/s"
