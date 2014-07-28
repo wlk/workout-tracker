@@ -1,10 +1,8 @@
 package controllers
 
-import java.text.DecimalFormat
 import play.api.mvc._
 import play.api.mvc.Controller
 import play.api.libs.json._
-import play.api.libs.functional.syntax._
 import models._
 import play.api.Logger
 
@@ -54,23 +52,23 @@ object Workouts extends Controller with Secured {
     }
   }
 
-  def edit(id: Int) = Security.Authenticated(username, onUnauthorized) { email => Action(parse.json) {
-    //at the moment the id parameter is ignored, and api looks only at what was passed in json object
-    request =>
-      try {
-        val workoutJson = request.body
-        val workout = workoutJson.as[IncomingWorkout]
-        Workout.edit(email, workout, id)
-        Ok("edited")
-      }
-      catch {
-        case e: IllegalArgumentException => BadRequest("Workout not found")
-        case e: Exception => {
-          Logger.info("exception = %s" format e)
-          BadRequest("Invalid Request")
+  def edit(id: Int) = Security.Authenticated(username, onUnauthorized) {
+    email => Action(parse.json) {
+      request =>
+        try {
+          val workoutJson = request.body
+          val workout = workoutJson.as[IncomingWorkout]
+          Workout.edit(email, workout, id)
+          Ok("edited")
         }
-      }
-  }
+        catch {
+          case e: IllegalArgumentException => BadRequest("Workout not found")
+          case e: Exception => {
+            Logger.info("exception = %s" format e)
+            BadRequest("Invalid Request")
+          }
+        }
+    }
   }
 
   def delete(id: Int) = Security.Authenticated(username, onUnauthorized) {

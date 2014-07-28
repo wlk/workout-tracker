@@ -5,7 +5,7 @@ import play.api.libs.json._
 import play.api.mvc.{Action, Controller}
 
 object Reports extends Controller with Secured{
-  def thisWeek = IsAuthenticated { username => _ =>
+  def allReports = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
       val reports = Report.findAll(user)
       Ok(Json.toJson(reports))

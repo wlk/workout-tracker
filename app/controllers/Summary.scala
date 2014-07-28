@@ -9,7 +9,7 @@ import play.api.libs.json._
 object Summary extends Controller with Secured{
   val formatter = new DecimalFormat("#.#")
 
-  def thisWeek = IsAuthenticated { username => _ =>
+  def allSummary = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
       val workouts = Workout.findAll(user)
       Ok(toJson(workouts))

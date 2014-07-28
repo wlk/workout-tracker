@@ -24,13 +24,13 @@ DELETE        /api/workouts/:id              controllers.Workouts.delete(id: Int
 
 
 #report for current week
-GET           /api/summary                   controllers.Summary.thisWeek
+GET           /api/summary                   controllers.Summary.allSummary
 #display report for each week in given range
 GET           /api/summary/:from/:to         controllers.Summary.list(from: String, to: String)
 
 
 #report for current week
-GET           /api/report                    controllers.Reports.thisWeek
+GET           /api/report                    controllers.Reports.allReports
 #display report for each week in given range
 GET           /api/report/:from/:to          controllers.Reports.list(from: String, to: String)
 
