@@ -28,20 +28,19 @@ object Auth extends Controller {
     })
   )
 
-  def index = Action {
-    Ok(views.html.index())
-  }
-
+  //displays login form
   def login = Action { implicit request =>
     Ok(views.html.login(loginForm))
   }
 
+  //performs logout action
   def logout = Action {
     Redirect(routes.Application.index).withNewSession.flashing(
       "success" -> "You've been logged out"
     )
   }
 
+  //verifies login form, configures session if form is ok
   def authenticate = Action { implicit request =>
     loginForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.login(formWithErrors)),
@@ -49,6 +48,7 @@ object Auth extends Controller {
     )
   }
 
+  //verifies signup form, adds user when successful, then redirects to login page
   def create = Action { implicit request =>
     signupForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.signup(formWithErrors)),

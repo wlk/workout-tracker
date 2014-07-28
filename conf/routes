@@ -34,6 +34,7 @@ GET           /api/report                    controllers.Reports.allReports
 #display report for each week in given range
 GET           /api/report/:from/:to          controllers.Reports.list(from: String, to: String)
 
+#create new user
 POST          /api/users/new                 controllers.Users.create
 
 

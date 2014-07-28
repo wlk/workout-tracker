@@ -10,6 +10,7 @@ object Workouts extends Controller with Secured {
 
   val dateFormat = org.joda.time.format.ISODateTimeFormat.dateTime()
 
+  //action to display all workouts for authenticated user
   def all() = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
       val workouts = Workout.findAll(user)
@@ -17,7 +18,7 @@ object Workouts extends Controller with Secured {
     }.getOrElse(Forbidden)
   }
 
-
+  //action to display workouts limtied by from, to parameters for authenticated user
   def list(from: String, to: String) = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
       val workouts = Workout.getRange(user, from, to)
@@ -25,6 +26,7 @@ object Workouts extends Controller with Secured {
     }.getOrElse(Forbidden)
   }
 
+  //action to show details of given workout
   def show(id: Int) = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
       val workout = Workout.findByIdForUser(user, id)
@@ -32,6 +34,7 @@ object Workouts extends Controller with Secured {
     }.getOrElse(Forbidden)
   }
 
+  //add new workout from json
   def add() = Security.Authenticated(username, onUnauthorized) {
     email => Action(parse.json) {
       request =>
@@ -52,6 +55,7 @@ object Workouts extends Controller with Secured {
     }
   }
 
+  //edit workout that has id equal to passed argument, verifies if user is logged in and owns that workout
   def edit(id: Int) = Security.Authenticated(username, onUnauthorized) {
     email => Action(parse.json) {
       request =>
@@ -71,6 +75,7 @@ object Workouts extends Controller with Secured {
     }
   }
 
+  //delete workout that has id equal to one passed as parameter, verifies if user is logged in and owns that workout
   def delete(id: Int) = Security.Authenticated(username, onUnauthorized) {
     email => Action {
       request =>

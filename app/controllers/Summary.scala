@@ -9,6 +9,7 @@ import play.api.libs.json._
 object Summary extends Controller with Secured{
   val formatter = new DecimalFormat("#.#")
 
+  //displays summary for all workouts
   def allSummary = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
       val workouts = Workout.findAll(user)
@@ -16,6 +17,7 @@ object Summary extends Controller with Secured{
     }.getOrElse(Forbidden)
   }
 
+  //displays summary for workouts limited by from, to parameters
   def list(from: String, to: String) = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
       val workouts = Workout.getRange(user, from, to)
@@ -23,6 +25,7 @@ object Summary extends Controller with Secured{
     }.getOrElse(Forbidden)
   }
 
+  //performs mapping from 3 values to JsonMap
   def toJson(w: List[Workout]) = {
     val totalDistance = w.map( w => w.distanceMeters).sum
     val totalTime = w.map( w => w.durationSeconds).sum

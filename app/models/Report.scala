@@ -14,6 +14,7 @@ object Report {
     workoutsToReport(Workout.getRange(user, startDate, endDate))
   }
 
+  //performs operation to calculate reports for all workouts passed as argument
   def workoutsToReport(workouts: List[Workout]) = {
     workouts.groupBy(w =>  new DateTime(w.date).getWeekOfWeekyear ).map(
       kv =>
@@ -29,7 +30,7 @@ object Report {
     workoutsToReport(Workout.findAll(user))
   }
 
-
+  //conversion from report to json
   implicit object reportWrites extends Writes[Report] {
     def writes(r: Report) = Json.obj(
       "distanceMeters" -> Json.toJson(r.distanceMeters),

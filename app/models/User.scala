@@ -9,6 +9,7 @@ object User {
     User(2, "secondUser", "pass")
   )
 
+  //performs a check to find if email and password match
   def authenticate(email: String, password: String): Option[User] = {
     this.users.find(u => u.email == email && u.password == password)
   }
@@ -21,6 +22,7 @@ object User {
     this.users.exists(_.email == email)
   }
 
+  //creates new user, makes sure that emails are unique
   def create(email: String, password: String){
     val newId = users.map(u => u.userId).max + 1
     val newUser = User(newId, email, password)

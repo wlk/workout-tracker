@@ -15,6 +15,7 @@ object Workout {
     Workout(4, 2, "run for different user", DateTime.now.toString("yyyy-MM-dd"), 100, 9)
   )
 
+  //checks if given workout can be accessed by given user
   def userCanAccess(id: Int, email: String): Boolean = {
     val user = User.findByEmail(email).get
     val workout = findByIdForUser(user, id).get
@@ -23,14 +24,21 @@ object Workout {
 
   val formatter = new DecimalFormat("#.#")
 
+  //calculates new workout id
+  def getNewWorkoutId: Int = {
+    var newId = 0 //this is not ideal
+
+    if (!workouts.isEmpty) {
+      newId = workouts.map(w => w.id).max + 1
+    }
+    newId
+  }
+
+  //adds new workout
   def add(email: String, incomingWorkout: IncomingWorkout) = {
     val user = User.findByEmail(email).get
 
-    var newId = 0 //ugly
-
-    if(!workouts.isEmpty){
-      newId = workouts.map(w => w.id).max + 1
-    }
+    val newId = getNewWorkoutId
 
     val workout = Workout(newId, user.userId, incomingWorkout.name, incomingWorkout.date, incomingWorkout.distanceMeters, incomingWorkout.durationSeconds)
 
@@ -39,6 +47,7 @@ object Workout {
     }
   }
 
+  //edits exising workout, makes sure that user can perform this action
   def edit(email: String, incomingWorkout: IncomingWorkout, id: Int) = {
     val user = User.findByEmail(email).get
 
