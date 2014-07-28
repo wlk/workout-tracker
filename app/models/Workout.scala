@@ -5,9 +5,15 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import java.text.DecimalFormat
 
-case class Workout(id: Long, userId: Int, name: String, date: String, distanceMeters: Int, durationSeconds: Int)
+case class Workout(id: Int, userId: Int, name: String, date: String, distanceMeters: Int, durationSeconds: Int)
 
 object Workout {
+  def userCanAccess(id: Int, email: String): Boolean = {
+    val workout = findById(id).get
+    val user = User.findByEmail(email).get
+    workout.userId == user.userId
+  }
+
   val formatter = new DecimalFormat("#.#")
 
 
@@ -15,7 +21,7 @@ object Workout {
 
   def edit(workout: Workout) = addOrEdit(workout)
 
-  def exists(id: Long) = this.workouts.exists(_.id == id)
+  def exists(id: Int) = this.workouts.exists(_.id == id)
 
   def addOrEdit(workout: Workout) = {
     findById(workout.id).map( oldWorkout =>
@@ -30,16 +36,16 @@ object Workout {
   }
 
   var workouts = Set(
-    Workout(1L, 1, "morning run", DateTime.now.hour(6).toString("yyyy-MM-dd"), 100, 9),
-    Workout(2L, 1, "evening run", DateTime.now.hour(18).toString("yyyy-MM-dd"), 2332, 322),
-    Workout(3L, 1, "evening run last week", DateTime.now.day(18).toString("yyyy-MM-dd"), 100, 9),
-    Workout(3L, 1, "evening run previous week", DateTime.now.day(7).toString("yyyy-MM-dd"), 100, 9),
-    Workout(4L, 2, "run for different user", DateTime.now.toString("yyyy-MM-dd"), 100, 9)
+    Workout(1, 1, "morning run", DateTime.now.hour(6).toString("yyyy-MM-dd"), 100, 9),
+    Workout(2, 1, "evening run", DateTime.now.hour(18).toString("yyyy-MM-dd"), 2332, 322),
+    Workout(3, 1, "evening run last week", DateTime.now.day(18).toString("yyyy-MM-dd"), 100, 9),
+    Workout(3, 1, "evening run previous week", DateTime.now.day(7).toString("yyyy-MM-dd"), 100, 9),
+    Workout(4, 2, "run for different user", DateTime.now.toString("yyyy-MM-dd"), 100, 9)
   )
 
   def findAll = this.workouts.toList.sortBy(_.id)
 
-  def findById(id: Long) = this.workouts.find(_.id == id)
+  def findById(id: Int) = this.workouts.find(_.id == id)
 
   def delete(id: Int){
     findById(id).map( oldWorkout =>
@@ -65,7 +71,7 @@ object Workout {
 
   //Json to Product
   implicit val workoutReads: Reads[Workout] = (
-    (JsPath \ "id").read[Long] and
+    (JsPath \ "id").read[Int] and
       (JsPath \ "userId").read[Int] and
       (JsPath \ "name").read[String] and
       (JsPath \ "date").read[String] and

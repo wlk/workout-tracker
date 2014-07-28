@@ -8,23 +8,30 @@ import play.api.libs.functional.syntax._
 import models._
 import play.api.Logger
 
-object Workouts extends Controller {
+object Workouts extends Controller with Secured{
 
   val dateFormat = org.joda.time.format.ISODateTimeFormat.dateTime()
 
-  def all() = Action {
-    val workouts = Workout.findAll
-    Ok(Json.toJson(workouts))
+  def all() = IsAuthenticated { username => _ =>
+    User.findByEmail(username).map { user =>
+      val workouts = Workout.findAll
+      Ok(Json.toJson(workouts))
+    }.getOrElse(Forbidden)
   }
 
-  def list(from: String, to: String) = Action {
-    val workouts = Workout.getRange(from, to)
-    Ok(Json.toJson(workouts))
+
+  def list(from: String, to: String) = IsAuthenticated { username => _ =>
+    User.findByEmail(username).map { user =>
+      val workouts = Workout.getRange(from, to)
+      Ok(Json.toJson(workouts))
+    }.getOrElse(Forbidden)
   }
 
-  def show(id: Int) = Action {
-    val workout = Workout.findById(id)
-    Ok(Json.toJson(workout))
+  def show(id: Int) = IsAuthenticated { username => _ =>
+    User.findByEmail(username).map { user =>
+      val workout = Workout.findById(id)
+      Ok(Json.toJson(workout))
+    }.getOrElse(Forbidden)
   }
 
   def add() = Action(parse.json) {

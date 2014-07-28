@@ -1,0 +1,50 @@
+@(form: Form[(String,String)])(implicit flash: Flash)
+
+<html>
+    <head>
+        <title>Workout Tracker - please login</title>
+        <link href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))' rel='stylesheet' >
+    </head>
+    <body>
+        
+        <header>
+            <a href="@routes.Application.index" id="logo"><span>Workout</span>Tracker</a>
+        </header>
+        
+        @helper.form(routes.Auth.authenticate) {
+            
+            <h1>Sign in</h1>
+            
+            @form.globalError.map { error =>
+                <p class="error">
+                    @error.message
+                </p>
+            }
+            
+            @flash.get("success").map { message =>
+                <p class="success">
+                    @message
+                </p>
+            }
+            
+            <p>
+                <input type="text" name="email" placeholder="Email" id="email" value="@form("email").value">
+            </p>
+            <p>
+                <input type="password" name="password" id="password" placeholder="Password">
+            </p>
+            <p>
+                <button type="submit" id="loginbutton">Login</button>
+            </p>
+            
+        }
+        
+        <p class="note">
+            Try <em>admin@@example.com</em> with <em>pass</em> as password.
+        </p>
+            
+    </body>
+</html>
+    
+
+

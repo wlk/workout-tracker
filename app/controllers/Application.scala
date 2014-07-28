@@ -1,11 +1,14 @@
 package controllers
 
-import play.api._
+import models.User
 import play.api.mvc._
 
-object Application extends Controller {
+object Application extends Controller with Secured {
 
-  def index = Action {
-    Ok(views.html.index())
+  def index = IsAuthenticated { username => _ =>
+    User.findByEmail(username).map { user =>
+      Ok(views.html.index())
+    }.getOrElse(Forbidden)
   }
+
 }

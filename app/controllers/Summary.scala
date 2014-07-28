@@ -2,21 +2,25 @@ package controllers
 
 import java.text.DecimalFormat
 
-import models.Workout
+import models.{User, Workout}
 import play.api.mvc._
 import play.api.libs.json._
 
-object Summary extends Controller {
+object Summary extends Controller with Secured{
   val formatter = new DecimalFormat("#.#")
 
-  def thisWeek = Action {
-    val workouts = Workout.findAll
-    Ok(toJson(workouts))
+  def thisWeek = IsAuthenticated { username => _ =>
+    User.findByEmail(username).map { user =>
+      val workouts = Workout.findAll
+      Ok(toJson(workouts))
+    }.getOrElse(Forbidden)
   }
 
-  def list(from: String, to: String) = Action {
-    val workouts = Workout.getRange(from, to)
-    Ok(toJson(workouts))
+  def list(from: String, to: String) = IsAuthenticated { username => _ =>
+    User.findByEmail(username).map { user =>
+      val workouts = Workout.getRange(from, to)
+      Ok(toJson(workouts))
+    }.getOrElse(Forbidden)
   }
 
   def toJson(w: List[Workout]) = {
