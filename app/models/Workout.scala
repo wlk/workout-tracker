@@ -57,7 +57,9 @@ object Workout {
 
   def findAll(user: User) = Workout.workouts.filter(w => w.userId == user.userId).toList.sortBy(_.id)
 
-  def findByIdForUser(user: User, id: Int) = this.workouts.find(_.id == id)
+  def findByIdForUser(user: User, id: Int) = {
+    this.workouts.find( w => w.id == id && w.userId == user.userId )
+  }
 
   def deleteAll(){
     workouts = Set()
@@ -65,6 +67,7 @@ object Workout {
 
   def delete(email: String, id: Int){
     val user = User.findByEmail(email).get
+
     findByIdForUser(user, id).map( oldWorkout =>
         this.workouts = this.workouts - oldWorkout
     ).getOrElse(
