@@ -1,16 +1,17 @@
 package controllers
 
+import play.api.libs.json._
 import play.api.mvc._
 
 import models._
 
 trait Secured {
-  private def username(request: RequestHeader) = request.session.get("email")
+  def username(request: RequestHeader) = request.session.get("email")
 
   /**
    * Redirect to login if the user in not authorized.
    */
-  private def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Auth.login)
+  def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Auth.login)
 
   /**
    * Action for authenticated users.
@@ -19,9 +20,6 @@ trait Secured {
     Action(request => f(user)(request))
   }
 
-  /**
-   * Check if the connected user is a member of this project.
-   */
   def isOwnerOf(workoutId: Int)(f: => String => Request[AnyContent] => Result) = IsAuthenticated { user => request =>
     if(Workout.userCanAccess(workoutId, user)) {
       f(user)(request)
