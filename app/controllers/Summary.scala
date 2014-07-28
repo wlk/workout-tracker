@@ -11,14 +11,14 @@ object Summary extends Controller with Secured{
 
   def thisWeek = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
-      val workouts = Workout.findAll
+      val workouts = Workout.findAll(user)
       Ok(toJson(workouts))
     }.getOrElse(Forbidden)
   }
 
   def list(from: String, to: String) = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
-      val workouts = Workout.getRange(from, to)
+      val workouts = Workout.getRange(user, from, to)
       Ok(toJson(workouts))
     }.getOrElse(Forbidden)
   }

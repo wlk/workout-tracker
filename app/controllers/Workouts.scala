@@ -14,7 +14,7 @@ object Workouts extends Controller with Secured {
 
   def all() = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
-      val workouts = Workout.findAll
+      val workouts = Workout.findAll(user)
       Ok(Json.toJson(workouts))
     }.getOrElse(Forbidden)
   }
@@ -22,20 +22,20 @@ object Workouts extends Controller with Secured {
 
   def list(from: String, to: String) = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
-      val workouts = Workout.getRange(from, to)
+      val workouts = Workout.getRange(user, from, to)
       Ok(Json.toJson(workouts))
     }.getOrElse(Forbidden)
   }
 
   def show(id: Int) = IsAuthenticated { username => _ =>
     User.findByEmail(username).map { user =>
-      val workout = Workout.findById(id)
+      val workout = Workout.findByIdForUser(user, id)
       Ok(Json.toJson(workout))
     }.getOrElse(Forbidden)
   }
 
   def add() = Security.Authenticated(username, onUnauthorized) {
-    user => Action(parse.json) {
+    email => Action(parse.json) {
       request =>
         try {
           val workoutJson = request.body
@@ -45,7 +45,7 @@ object Workouts extends Controller with Secured {
             throw new IllegalArgumentException("workout exists")
           }
           else {
-            Workout.add(workout)
+            Workout.add(email, workout)
             Ok("added")
           }
         }
@@ -59,13 +59,13 @@ object Workouts extends Controller with Secured {
     }
   }
 
-  def edit(id: Int) = Security.Authenticated(username, onUnauthorized) { user => Action(parse.json) {
+  def edit(id: Int) = Security.Authenticated(username, onUnauthorized) { email => Action(parse.json) {
     //at the moment the id parameter is ignored, and api looks only at what was passed in json object
     request =>
       try {
         val workoutJson = request.body
         val workout = workoutJson.as[Workout]
-        Workout.edit(workout)
+        Workout.edit(email, workout)
         Ok("edited")
       }
       catch {
@@ -79,10 +79,10 @@ object Workouts extends Controller with Secured {
   }
 
   def delete(id: Int) = Security.Authenticated(username, onUnauthorized) {
-    user => Action {
+    email => Action {
       request =>
         try {
-          Workout.delete(id)
+          Workout.delete(email, id)
           Ok("deleted")
         }
         catch {

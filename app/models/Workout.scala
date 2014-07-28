@@ -8,31 +8,37 @@ import java.text.DecimalFormat
 case class Workout(id: Int, userId: Int, name: String, date: String, distanceMeters: Int, durationSeconds: Int)
 
 object Workout {
+
   def userCanAccess(id: Int, email: String): Boolean = {
-    val workout = findById(id).get
     val user = User.findByEmail(email).get
+    val workout = findByIdForUser(user, id).get
     workout.userId == user.userId
   }
 
   val formatter = new DecimalFormat("#.#")
 
+  def add(email: String, workout: Workout) = {
+    val user = User.findByEmail(email).get
+    addOrEdit(user, workout)
+  }
 
-  def add(workout: Workout) = addOrEdit(workout)
-
-  def edit(workout: Workout) = addOrEdit(workout)
+  def edit(email: String, workout: Workout) = {
+    val user = User.findByEmail(email).get
+    addOrEdit(user, workout)
+  }
 
   def exists(id: Int) = this.workouts.exists(_.id == id)
 
-  def addOrEdit(workout: Workout) = {
-    findById(workout.id).map( oldWorkout =>
+  def addOrEdit(user: User, workout: Workout) = {
+    findByIdForUser(user, workout.id).map(oldWorkout =>
       this.workouts = this.workouts - oldWorkout + workout
     ).getOrElse(
         this.workouts = this.workouts + workout
       )
   }
 
-  def getRange(from: String, to: String) = {
-    this.workouts.filter( w => w.date >= from && w.date <= to).toList
+  def getRange(user: User, from: String, to: String) = {
+    this.workouts.filter( w => w.date >= from && w.date <= to && w.userId == user.userId).toList
   }
 
   var workouts = Set(
@@ -43,18 +49,19 @@ object Workout {
     Workout(4, 2, "run for different user", DateTime.now.toString("yyyy-MM-dd"), 100, 9)
   )
 
-  def findAll = this.workouts.toList.sortBy(_.id)
+  def findAll(user: User) = Workout.workouts.filter(w => w.userId == user.userId).toList.sortBy(_.id)
 
-  def findById(id: Int) = this.workouts.find(_.id == id)
 
-  def delete(id: Int){
-    findById(id).map( oldWorkout =>
-      this.workouts = this.workouts - oldWorkout
+  def findByIdForUser(user: User, id: Int) = this.workouts.find(_.id == id)
+
+  def delete(email: String, id: Int){
+    val user = User.findByEmail(email).get
+    findByIdForUser(user, id).map( oldWorkout =>
+        this.workouts = this.workouts - oldWorkout
     ).getOrElse(
         throw new IllegalArgumentException("Workout not found")
       )
   }
-
 
   //Product to Json
   implicit object workoutWrites extends Writes[Workout] {
