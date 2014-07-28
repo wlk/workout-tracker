@@ -2,7 +2,6 @@ package models
 
 import com.github.nscala_time.time.Imports._
 import play.api.libs.json._
-import play.api.libs.functional.syntax._
 import java.text.DecimalFormat
 
 case class Workout(id: Int, userId: Int, name: String, date: String, distanceMeters: Int, durationSeconds: Int)
@@ -26,13 +25,18 @@ object Workout {
 
   def add(email: String, incomingWorkout: IncomingWorkout) = {
     val user = User.findByEmail(email).get
-    val newId = workouts.map(w => w.id).max + 1
+
+    var newId = 0 //ugly
+
+    if(!workouts.isEmpty){
+      newId = workouts.map(w => w.id).max + 1
+    }
+
     val workout = Workout(newId, user.userId, incomingWorkout.name, incomingWorkout.date, incomingWorkout.distanceMeters, incomingWorkout.durationSeconds)
 
     if(!exists(workout.id)){
       this.workouts = this.workouts + workout
     }
-
   }
 
   def edit(email: String, incomingWorkout: IncomingWorkout, id: Int) = {
@@ -43,7 +47,6 @@ object Workout {
       val newWorkout = Workout(id, user.userId, incomingWorkout.name, incomingWorkout.date, incomingWorkout.distanceMeters, incomingWorkout.durationSeconds)
       this.workouts = this.workouts - oldWorkout + newWorkout
     }
-
   }
 
   def exists(id: Int) = this.workouts.exists(_.id == id)
@@ -55,6 +58,10 @@ object Workout {
   def findAll(user: User) = Workout.workouts.filter(w => w.userId == user.userId).toList.sortBy(_.id)
 
   def findByIdForUser(user: User, id: Int) = this.workouts.find(_.id == id)
+
+  def deleteAll(){
+    workouts = Set()
+  }
 
   def delete(email: String, id: Int){
     val user = User.findByEmail(email).get
