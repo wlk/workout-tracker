@@ -14,3 +14,6 @@ dist
 /RUNNING_PID
 /.settings
 .cache
+project/activator-sbt-eclipse-shim.sbt
+project/activator-sbt-idea-shim.sbt
+
