@@ -1,3 +1,5 @@
+Note: This project is quite old, I have rewritten it to be based of akka-http here: https://github.com/wlk/workout-tracker-akka-http
+
 ##Objective
 
 Create an application that tracks workouts (jogging) for logged in users
